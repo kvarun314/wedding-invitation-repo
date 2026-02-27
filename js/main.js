@@ -4,6 +4,41 @@
 (function () {
   'use strict';
 
+  // ----- Background music (low volume, loop) -----
+  var bgm = document.getElementById('bgm');
+
+  function tryPlayBgm() {
+    if (!bgm) return;
+    bgm.volume = 0.25;
+    var playPromise = bgm.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.catch(function () {
+        // Autoplay blocked; will be retried on first user interaction
+      });
+    }
+  }
+
+  if (bgm) {
+    if (document.readyState === 'complete') {
+      tryPlayBgm();
+    } else {
+      window.addEventListener('load', function () {
+        tryPlayBgm();
+      });
+    }
+
+    ['click', 'touchstart', 'keydown'].forEach(function (evt) {
+      window.addEventListener(
+        evt,
+        function onFirstInteraction() {
+          tryPlayBgm();
+          window.removeEventListener(evt, onFirstInteraction);
+        },
+        { once: true }
+      );
+    });
+  }
+
   // ----- Hero photo carousel (multiple photos with fade transitions) -----
   var slides = document.querySelectorAll('.hero-slide');
   var dotsContainer = document.querySelector('.hero-dots');
@@ -123,6 +158,36 @@
   if (elDays && elHours && elMins && elSecs) {
     updateCountdown();
     setInterval(updateCountdown, 1000);
+  }
+
+  // ----- Add to Calendar: download .ics file -----
+  var icsBtn = document.getElementById('download-ics');
+  if (icsBtn) {
+    icsBtn.addEventListener('click', function () {
+      var ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Sowmya Shree & Varun Wedding//EN',
+        'CALSCALE:GREGORIAN',
+        'BEGIN:VEVENT',
+        'UID:sowmya-varun-wedding-2026@invitation',
+        'DTSTAMP:20260101T000000Z',
+        'DTSTART:20260420T043000Z',
+        'DTEND:20260420T050000Z',
+        'SUMMARY:Sowmya Shree \\& Varun\'s Wedding',
+        'LOCATION:Avadhani Convention Centre\\, Girinagar\\, Bengaluru',
+        'DESCRIPTION:Muhurtam 10:00 – 10:30 AM. Reception: April 19\\, 2026 7:00 PM onwards.',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+      var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'Sowmya-Shree-Varun-Wedding.ics';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
   }
 
   // ----- Smooth scroll for #details (anchor already works with scroll-behavior: smooth) -----

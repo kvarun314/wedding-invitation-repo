@@ -955,6 +955,62 @@ body {
   text-decoration: underline;
 }
 
+.contact-line .contact-name {
+  font-weight: 600;
+  color: var(--text-brown);
+}
+
+/* Add to Calendar */
+.add-to-calendar {
+  text-align: center;
+  margin: 1.25rem 0 1.5rem;
+}
+
+.add-to-calendar-label {
+  font-size: 0.9rem;
+  color: var(--text-gold-dark);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.04em;
+}
+
+.add-to-calendar-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-calendar {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+  border: 1px solid rgba(139, 105, 20, 0.5);
+  color: var(--text-gold-dark);
+  background: rgba(254, 251, 249, 0.9);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-calendar:hover {
+  background: var(--text-gold-dark);
+  color: var(--bg-cream);
+  border-color: var(--text-gold-dark);
+}
+
+.btn-google {
+  color: var(--text-brown);
+}
+
+.btn-ics {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* ----- Responsive: mobile first, then tablet & desktop ----- */
 
 /* Small phones (e.g. 320–480px): already handled by base + clamp() */
