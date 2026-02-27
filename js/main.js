@@ -4,8 +4,10 @@
 (function () {
   'use strict';
 
-  // ----- Background music (low volume, loop) -----
+  // ----- Background music (starts only after user interaction) -----
   var bgm = document.getElementById('bgm');
+  var bgmStartedByUser = false;
+  var bgmPausedForVisibility = false;
 
   function tryPlayBgm() {
     if (!bgm) return;
@@ -13,29 +15,33 @@
     var playPromise = bgm.play();
     if (playPromise && typeof playPromise.catch === 'function') {
       playPromise.catch(function () {
-        // Autoplay blocked; will be retried on first user interaction
+        // Playback can be blocked; user can retry by interacting again
       });
     }
   }
 
   if (bgm) {
-    if (document.readyState === 'complete') {
-      tryPlayBgm();
-    } else {
-      window.addEventListener('load', function () {
+    ['click', 'touchstart', 'keydown'].forEach(function (evt) {
+      window.addEventListener(evt, function () {
+        bgmStartedByUser = true;
         tryPlayBgm();
       });
-    }
+    });
 
-    ['click', 'touchstart', 'keydown'].forEach(function (evt) {
-      window.addEventListener(
-        evt,
-        function onFirstInteraction() {
-          tryPlayBgm();
-          window.removeEventListener(evt, onFirstInteraction);
-        },
-        { once: true }
-      );
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        if (!bgm.paused) {
+          bgmPausedForVisibility = true;
+          bgm.pause();
+        }
+      } else if (bgmStartedByUser && bgmPausedForVisibility) {
+        bgmPausedForVisibility = false;
+        tryPlayBgm();
+      }
+    });
+
+    window.addEventListener('pagehide', function () {
+      if (!bgm.paused) bgm.pause();
     });
   }
 
