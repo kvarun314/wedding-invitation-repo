@@ -29,6 +29,7 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
 }
 
 @supports (min-height: 100dvh) {
@@ -95,6 +96,20 @@ body {
   overflow: hidden;
   z-index: 0;
   background: linear-gradient(180deg, transparent 0%, rgba(254, 251, 249, 0.98) 100%);
+}
+
+/* Prevent horizontal scroll on tablets and phones */
+@media (max-width: 1024px) {
+  html,
+  body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
+  .decorative-bottom {
+    width: 100%;
+    margin-left: 0;
+  }
 }
 
 .floral-border-bottom {
@@ -699,9 +714,80 @@ body {
 .media-item.video {
   position: relative;
   padding: 0;
+  cursor: pointer;
+  border: double 4px var(--text-gold-dark);
+  border-color: rgba(139, 105, 20, 0.7);
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 2px var(--accent-maroon-soft), 0 2px 16px rgba(61, 40, 23, 0.1);
 }
 
-.media-item.video iframe {
+.media-item.video .video-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+.media-item.video.is-playing .video-poster,
+.media-item.video.is-playing .video-play-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.media-item.video .video-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease, opacity 0.3s ease;
+  padding: 0;
+}
+
+.media-item.video .video-play-btn:hover {
+  background: rgba(0, 0, 0, 0.55);
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.media-item.video .video-play-icon {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 14px 0 14px 26px;
+  border-color: transparent transparent transparent rgba(255, 255, 255, 0.95);
+  margin-left: 6px;
+}
+
+.media-item.video .video-embed-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  display: block;
+  background: #000;
+}
+
+.media-item.video .video-embed-wrap[hidden] {
+  display: none !important;
+}
+
+.media-item.video .video-embed-wrap iframe {
   position: absolute;
   top: 0;
   left: 0;

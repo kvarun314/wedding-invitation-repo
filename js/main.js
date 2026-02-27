@@ -74,6 +74,44 @@
     if (slides.length > 1) startCarousel();
   }
 
+  // ----- Google Drive video: poster thumbnail + click to play -----
+  document.querySelectorAll('.media-item.video').forEach(function (wrap) {
+    var poster = wrap.querySelector('.video-poster');
+    var playBtn = wrap.querySelector('.video-play-btn');
+    var embedWrap = wrap.querySelector('.video-embed-wrap');
+    var iframe = embedWrap ? embedWrap.querySelector('iframe[data-src]') : null;
+
+    if (poster && poster.getAttribute('data-drive-thumb')) {
+      poster.addEventListener('error', function () {
+        poster.setAttribute('src', poster.getAttribute('data-drive-thumb'));
+      });
+    }
+
+    if (playBtn && embedWrap && iframe) {
+      function playVideo() {
+        wrap.classList.add('is-playing');
+        embedWrap.removeAttribute('hidden');
+        var src = iframe.getAttribute('data-src');
+        if (src) {
+          iframe.setAttribute('src', src);
+          iframe.removeAttribute('data-src');
+        }
+      }
+      playBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        playVideo();
+      });
+      wrap.addEventListener('click', function (e) {
+        if (e.target === playBtn || playBtn.contains(e.target)) return;
+        if (!wrap.classList.contains('is-playing')) {
+          e.preventDefault();
+          playVideo();
+        }
+      });
+    }
+  });
+
   // ----- Placeholders when images fail to load -----
   document.querySelectorAll('.hero-placeholder, .media-placeholder').forEach(function (el) {
     if (el.classList.contains('visible')) return;

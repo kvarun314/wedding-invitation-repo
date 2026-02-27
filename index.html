@@ -107,14 +107,25 @@
   </div>
 
   <div class="media-gallery media-gallery-single">
-    <div class="media-item video">
-      <iframe
-        src="https://drive.google.com/file/d/1foaPSJbl_0bgHJRvZdsaOn_Pxl0YN3OO/preview"
-        title="SOWMYASHREE &amp; VARUN ENGAGEMENT"
-        frameborder="0"
-        allow="autoplay"
-        allowfullscreen>
-      </iframe>
+    <div class="media-item video" data-drive-id="1foaPSJbl_0bgHJRvZdsaOn_Pxl0YN3OO">
+      <!-- Custom thumbnail image for the video -->
+      <img
+        class="video-poster"
+        src="images/thumbnail.jpg"
+        alt="Play engagement video"
+        data-drive-thumb="https://drive.google.com/thumbnail?id=1foaPSJbl_0bgHJRvZdsaOn_Pxl0YN3OO&sz=w1280">
+      <button type="button" class="video-play-btn" aria-label="Play video">
+        <span class="video-play-icon" aria-hidden="true"></span>
+      </button>
+      <div class="video-embed-wrap" hidden>
+        <iframe
+          data-src="https://drive.google.com/file/d/1foaPSJbl_0bgHJRvZdsaOn_Pxl0YN3OO/preview?autoplay=1"
+          title="SOWMYASHREE &amp; VARUN ENGAGEMENT"
+          frameborder="0"
+          allow="autoplay"
+          allowfullscreen>
+        </iframe>
+      </div>
     </div>
   </div>
 
