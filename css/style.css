@@ -300,6 +300,24 @@ body {
   }
 }
 
+/* Smaller carousel dots on phone (avoid huge white circles) */
+@media (max-width: 768px) {
+  .hero-dot {
+    width: 8px;
+    height: 8px;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .hero-dots {
+    gap: 6px;
+  }
+  .hero-dot.active {
+    transform: scale(1.15);
+  }
+}
+
 .hero-placeholder,
 .media-placeholder,
 .venue-image-wrap .hero-placeholder {
